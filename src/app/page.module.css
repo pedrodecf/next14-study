@@ -3,3 +3,21 @@
     grid-template-columns: 1fr 1fr;
     gap: 24px;
 }
+
+.divPagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+    grid-column: span 2;
+    gap: 16px;
+}
+
+.buttonPagination {
+    color: #BFFFC3;
+    text-align: center;
+}
+
+.buttonPagination:hover {
+    color: #9cd3a0;
+    cursor: pointer;
+}

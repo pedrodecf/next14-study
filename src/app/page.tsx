@@ -1,6 +1,7 @@
 import { CardPost } from "@/components/CardPost";
 import logger from "@/logger";
 import styles from './page.module.css'
+import Link from "next/link";
 
 const post = {
   "id": 1,
@@ -44,8 +45,9 @@ interface Post {
   };
 }
 
-export default async function Home() {
-  const { data: posts } = await getAllPosts(1)
+export default async function Home({ searchParams }: any) {
+  const currentPage = searchParams?.page || 1
+  const { data: posts, prev, next } = await getAllPosts(currentPage)
   return (
     <main className={styles.main}>
       {posts.map((post: Post) => (
@@ -56,8 +58,13 @@ export default async function Home() {
           description={post.body}
           authorAvatar={post.author.avatar}
           authorName={post.author.username}
+          slug={post.slug}
         />
       ))}
+      <div className={styles.divPagination}>
+        {prev && <Link className={styles.buttonPagination} href={`/?page=${prev}`}>Página anterior</Link>}
+        {next && <Link className={styles.buttonPagination} href={`/?page=${next}`}>Próxima página</Link>}
+      </div>
     </main>
   );
 }
