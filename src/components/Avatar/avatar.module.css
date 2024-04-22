@@ -1,0 +1,7 @@
+.avatarContainer {
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+    gap: 8px;
+    color: #888888;
+}
