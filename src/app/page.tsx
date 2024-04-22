@@ -1,4 +1,6 @@
 import { CardPost } from "@/components/CardPost";
+import logger from "@/logger";
+import styles from './page.module.css'
 
 const post = {
   "id": 1,
@@ -15,17 +17,47 @@ const post = {
       }
 }
 
-export default function Home() {
+async function getAllPosts(page: number) {
+  const response = await fetch(`http://localhost:3042/posts?_page=${page}&_per_page=6`)
+
+  if (!response.ok) {
+    logger.error('Erro ao buscar posts')
+    return []
+  }
+
+  logger.info('Posts carregados com sucesso')
+  return response.json()
+}
+
+interface Post {
+  id: number;
+  cover: string;
+  title: string;
+  slug: string;
+  body: string;
+  markdown: string;
+  author: {
+    id: number;
+    name: string;
+    username: string;
+    avatar: string;
+  };
+}
+
+export default async function Home() {
+  const { data: posts } = await getAllPosts(1)
   return (
-    <main>
-      <CardPost
-        key={post.id}
-        banner={post.cover}
-        title={post.title}
-        description={post.body}
-        authorAvatar={post.author.avatar}
-        authorName={post.author.username}
-      /> 
+    <main className={styles.main}>
+      {posts.map((post: Post) => (
+        <CardPost
+          key={post.id}
+          banner={post.cover}
+          title={post.title}
+          description={post.body}
+          authorAvatar={post.author.avatar}
+          authorName={post.author.username}
+        />
+      ))}
     </main>
   );
 }
