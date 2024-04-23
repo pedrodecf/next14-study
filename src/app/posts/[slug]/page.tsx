@@ -3,43 +3,35 @@ import { remark } from 'remark'
 import { Avatar } from '@/components/Avatar'
 import Image from 'next/image'
 import styles from './page.module.css'
-
-interface PostProps {
-    id: string
-    cover: string
-    title: string
-    body: string
-    markdown: string
-    author: {
-        id: string
-        name: string
-        username: string
-        avatar: string
-    }
-}
+import { db } from '../../../../prisma/db'
+import { redirect } from 'next/navigation'
 
 async function getPostBySlug(slug: string) {
-    const response = await fetch(`http://localhost:3042/posts?slug=${slug}`)
-    if (!response.ok) {
-        return {}
-    }
+
+    try {
+        const post = await db.post.findFirstOrThrow({
+            where: { slug },
+            include: { author: true }
+        })
+
+        if (!post) {
+            throw new Error('Post not found')
+        }
     
-    const data = await response.json()
-    if (!data.length) {
-        return {}
+        const processedContent = await remark().use(html).process(post.markdown)
+        const contentHtml = processedContent.toString()
+        post.markdown = contentHtml
+    
+        return post
+    } catch (error) {
+        console.error(error)
     }
 
-    const post: PostProps = data[0]
-
-    const processedContent = await remark().use(html).process(post.markdown)
-    const contentHtml = processedContent.toString()
-    post.markdown = contentHtml
-
-    return post
-}
+    redirect('/not-found')
+}   
 
 export default async function PagePost({ params }: any) {
-    const post: PostProps = await getPostBySlug(params.slug) as PostProps;
+    const post = await getPostBySlug(params.slug);
     return (
         <main className={styles.main}>
             <section className={styles.card}> 
