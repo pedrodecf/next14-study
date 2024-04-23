@@ -5,6 +5,7 @@ import Image from 'next/image'
 import styles from './page.module.css'
 import { db } from '../../../../prisma/db'
 import { redirect } from 'next/navigation'
+import { SearchBar } from '@/components/SearchBar'
 
 async function getPostBySlug(slug: string) {
 
@@ -34,6 +35,7 @@ export default async function PagePost({ params }: any) {
     const post = await getPostBySlug(params.slug);
     return (
         <main className={styles.main}>
+            <SearchBar />
             <section className={styles.card}> 
                 <header className={styles.header}>
                     <Image className={styles.banner} src={post.cover} alt={post.title} width={961} height={300}/>
