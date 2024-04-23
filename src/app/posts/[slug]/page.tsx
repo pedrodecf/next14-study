@@ -29,9 +29,15 @@ async function getPostBySlug(slug: string) {
     }
 
     redirect('/not-found')
-}   
+}
 
-export default async function PagePost({ params }: any) {
+interface PagePostParamsProps {
+    params: {
+        slug: string
+    }
+}
+
+export default async function PagePost({ params }: PagePostParamsProps) {
     const post = await getPostBySlug(params.slug);
     return (
         <main className={styles.main}>

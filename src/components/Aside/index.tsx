@@ -1,14 +1,13 @@
 import Image from 'next/image'
 import styles from './aside.module.css'
 import logo from './logo.png'
-import Link from 'next/link'
 
 export function Aside() {
     return (
         <aside className={styles.aside}>
-            <Link href="/">
+            <a href="/">
                 <Image src={logo} alt='Logo Code Connection'/>
-            </Link>
+            </a>
         </aside>
     )
 }
