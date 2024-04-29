@@ -43,6 +43,23 @@
 
 .footer {
     display: flex;
-    justify-content: flex-end;
-    padding: 16px
+    justify-content: space-between;
+    padding: 16px;
+}
+
+.footer p{
+    font-size: 15px;
+    color: #888;
+    text-align: center;
+}
+
+.link {
+    cursor: pointer;
+    color: #81FD88;
+    text-decoration: underline;
+    width: fit-content;
+}
+
+.link:hover {
+    color: #60d066;
 }

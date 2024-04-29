@@ -59,6 +59,7 @@ export default async function Home({ searchParams }: HomePageParamsProps) {
       <main className={styles.main}>
         {posts.map((post) => (
           <CardPost
+            id={post.id}
             key={post.id}
             banner={post.cover}
             title={post.title}
@@ -66,6 +67,7 @@ export default async function Home({ searchParams }: HomePageParamsProps) {
             authorAvatar={post.author.avatar}
             authorName={post.author.username}
             slug={post.slug}
+            likes={post.likes}
           />
         ))}
         <div className={styles.divPagination}>
